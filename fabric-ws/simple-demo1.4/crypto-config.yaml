@@ -1,0 +1,20 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: simple-network.com
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: Org1
+    Domain: org1.simple-network.com
+    Template:
+      Count: 2
+    Users:
+      Count: 2
+
+  - Name: Org2
+    Domain: org2.simple-network.com
+    Template:
+      Count: 2
+    Users:
+      Count: 2

@@ -1,0 +1,131 @@
+General:
+  LedgerType: file
+  ListenAddress: 0.0.0.0
+  ListenPort: 7050
+  TLS:
+    Enabled: false
+    PrivateKey: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer.hwsj.com/tls/server.key
+    Certificate: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer.hwsj.com/tls/server.crt
+    RootCAs:
+      - ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer.hwsj.com/tls/ca.crt
+    ClientRootCAs:
+  GenesisMethod: file
+  GenesisProfile: TwoOrgsOrdererGenesis
+  GenesisFile: genesis.block
+  LocalMSPDir: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer.hwsj.com/msp
+  LocalMSPID: OrdererMSP
+  Profile:
+    Enabled: false
+    Address: 0.0.0.0:6060
+  BCCSP:
+    Default: SW
+    SW:
+      Hash: SHA2
+      Security: 256
+      FileKeyStore:
+        KeyStore:
+FileLedger:
+  Location: production/orderer
+  Prefix: hyperledger-fabric-ordererledger
+RAMLedger:
+  HistorySize: 1000
+Kafka:
+  Retry:
+    ShortInterval: 5s
+    ShortTotal: 10m
+    LongInterval: 5m
+    LongTotal: 12h
+    NetworkTimeouts:
+      DialTimeout: 10s
+      ReadTimeout: 10s
+      WriteTimeout: 10s
+    Metadata:
+      RetryBackoff: 250ms
+      RetryMax: 3
+    Producer:
+      RetryBackoff: 100ms
+      RetryMax: 3
+    Consumer:
+      RetryBackoff: 2s
+  Verbose: false
+  TLS:
+    Enabled: false
+    PrivateKey:
+    Certificate:
+    #File: path/to/Certificate
+    RootCAs:
+    #File: path/to/RootCAs
+  Version:
+
+################################################################################
+#
+#   Debug Configuration
+#
+#   - This controls the debugging options for the orderer
+#   - 这将控制orderer的调试选项
+#
+################################################################################
+Debug:
+
+  # BroadcastTraceDir when set will cause each request to the Broadcast service for this orderer to be written to a file in this directory
+  # 当设置BroadcastTraceDir时，将导致对广播服务的每个请求都被写入到此目录中的文件中
+  BroadcastTraceDir:
+
+  # DeliverTraceDir when set will cause each request to the Deliver service for this orderer to be written to a file in this directory
+  # 当设置DeliverTraceDir时，将导致此定购程序对交付服务的每个请求被写入此目录中的文件
+  DeliverTraceDir:
+################################################################################
+#
+#   Operations Configuration
+#
+#   - This configures the operations server endpoint for the orderer
+#   - 这将为orderer配置操作服务器端点
+#
+################################################################################
+Operations:
+  # host and port for the operations server
+  # 帮助地址 https://hyperledger-fabric.readthedocs.io/en/release-1.4/operations_service.html
+  ListenAddress: 0.0.0.0:8443
+
+  # TLS configuration for the operations endpoint
+  TLS:
+    # TLS enabled
+    Enabled: false
+
+    # Certificate is the location of the PEM encoded TLS certificate
+    Certificate:
+
+    # PrivateKey points to the location of the PEM-encoded key
+    PrivateKey:
+
+    # Most operations service endpoints require client authentication when TLS
+    # is enabled. ClientAuthRequired requires client certificate authentication
+    # at the TLS layer to access all resources.
+    ClientAuthRequired: false
+
+    # Paths to PEM encoded ca certificates to trust for client authentication
+    ClientRootCAs: []
+
+################################################################################
+#
+#   Metrics  Configuration
+#
+#   - This configures metrics collection for the orderer
+#   - 这将为orderer配置度量集合
+#
+################################################################################
+Metrics:
+  # The metrics provider is one of statsd, prometheus, or disabled
+  # 帮助地址https://hyperledger-fabric.readthedocs.io/en/release-1.4/metrics_reference.html
+  Provider: disabled
+  # The statsd configuration
+  Statsd:
+    # network type: tcp or udp
+    Network: udp
+    # the statsd server address
+    Address: 0.0.0.0:8125
+    # The interval at which locally cached counters and gauges are pushed
+    # to statsd; timings are pushed immediately
+    WriteInterval: 30s
+    # The prefix is prepended to all emitted statsd metrics
+    Prefix: OrdererOrg

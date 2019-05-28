@@ -1,0 +1,245 @@
+logging:
+  peer:       debug
+  cauthdsl:   warning
+  gossip:     warning
+  ledger:     info
+  msp:        warning
+  policies:   warning
+  grpc:       error
+  format: '%{color}%{time:2006-01-02 15:04:05.000 MST} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}'
+
+peer:
+  id: peer0.org1.hwsj.com
+  networkId: dev
+  listenAddress: 0.0.0.0:7051
+  address: peer0.org1.hwsj.com:7051
+  chaincodeListenAddress: 0.0.0.0:7052
+  chaincodeAddress: peer0.org1.hwsj.com:7052
+  addressAutoDetect: false
+  gomaxprocs: -1
+  gossip:
+    bootstrap: peer0.org1.hwsj.com:7051
+    externalEndpoint: peer0.org1.hwsj.com:7051
+    useLeaderElection: true
+    orgLeader: false
+    endpoint:
+    maxBlockCountToStore: 100
+    maxPropagationBurstLatency: 10ms
+    maxPropagationBurstSize: 10
+    propagateIterations: 1
+    propagatePeerNum: 3
+    pullInterval: 4s
+    pullPeerNum: 3
+    requestStateInfoInterval: 4s
+    publishStateInfoInterval: 4s
+    stateInfoRetentionInterval:
+    publishCertPeriod: 10s
+    skipBlockVerification: false
+    dialTimeout: 3s
+    connTimeout: 2s
+    recvBuffSize: 20
+    sendBuffSize: 200
+    digestWaitTime: 1s
+    requestWaitTime: 1s
+    responseWaitTime: 2s
+    aliveTimeInterval: 5s
+    aliveExpirationTimeout: 25s
+    reconnectInterval: 2
+    election:
+      startupGracePeriod: 15s
+      membershipSampleInterval: 1s
+      leaderAliveThreshold: 10s
+      leaderElectionDuration: 5s
+    pvtData:
+      transientstoreMaxBlockRetention: 1000
+      reconcileSleepInterval: 1m0s
+      reconcileBatchSize: 10
+  events:
+    address: 0.0.0.0:7053
+    buffersize: 100
+    timeout: 10ms
+  tls:
+    enabled:  false
+    cert:
+      file: ../crypto-config/peerOrganizations/org1.hwsj.com/peers/peer0.org1.hwsj.com/tls/server.crt
+    key:
+      file: ../crypto-config/peerOrganizations/org1.hwsj.com/peers/peer0.org1.hwsj.com/tls/server.key
+    rootcert:
+      file: ../crypto-config/peerOrganizations/org1.hwsj.com/peers/peer0.org1.hwsj.com/tls/ca.crt
+    serverhostoverride:
+  ##  身份验证包含与验证客户端消息相关的配置参数
+  authentication:
+    ##  客户端请求消息中指定的当前服务器时间与客户端时间之间的可接受差异
+    timewindow: 15m
+  fileSystemPath: production
+  BCCSP:
+    Default: SW
+    SW:
+      Hash: SHA2
+      Security: 256
+      FileKeyStore:
+        KeyStore:
+  mspConfigPath: ../crypto-config/peerOrganizations/org1.hwsj.com/peers/peer0.org1.hwsj.com/msp
+  localMspId: Org1MSP
+  profile:
+    enabled:     false
+    listenAddress: 0.0.0.0:6060
+
+  handlers:
+    authFilters:
+      -
+        name: DefaultAuth
+      -
+        name: ExpirationCheck
+    decorators:
+      -
+        name: DefaultDecorator
+    endorsers:
+      escc:
+        name: DefaultEndorsement
+        library:
+    validators:
+      vscc:
+        name: DefaultValidation
+        library:
+  #    library: /etc/hyperledger/fabric/plugin/escc.so
+  # Number of goroutines that will execute transaction validation in parallel.
+  # By default, the peer chooses the number of CPUs on the machine. Set this
+  # variable to override that choice.
+  # NOTE: overriding this value might negatively influence the performance of
+  # the peer so please change this value only if you know what you're doing
+  validatorPoolSize:
+
+  # The discovery service is used by clients to query information about peers,
+  # such as - which peers have joined a certain channel, what is the latest
+  # channel config, and most importantly - given a chaincode and a channel,
+  # what possible sets of peers satisfy the endorsement policy.
+  discovery:
+    enabled: true
+    # Whether the authentication cache is enabled or not.
+    authCacheEnabled: true
+    # The maximum size of the cache, after which a purge takes place
+    authCacheMaxSize: 1000
+    # The proportion (0 to 1) of entries that remain in the cache after the cache is purged due to overpopulation
+    authCachePurgeRetentionRatio: 0.75
+    # Whether to allow non-admins to perform non channel scoped queries.
+    # When this is false, it means that only peer admins can perform non channel scoped queries.
+    orgMembersAllowedAccess: false
+
+vm:
+  endpoint: unix:///var/run/docker.sock
+  docker:
+    tls:
+      enabled: false
+      ca:
+        file: docker/ca.crt
+      cert:
+        file: docker/tls.crt
+      key:
+        file: docker/tls.key
+    attachStdout: false
+    hostConfig:
+      NetworkMode: host
+      Dns:
+      LogConfig:
+        Type: json-file
+        Config:
+          max-size: "50m"
+          max-file: "5"
+      Memory: 2147483648
+chaincode:
+  peerAddress:
+  id:
+    path:
+    name:
+  builder: $(DOCKER_NS)/fabric-ccenv:$(ARCH)-$(PROJECT_VERSION)
+
+  # 在用户链代码实例化期间，启用/禁用基本docker映像的强制拉取(如下所列)。
+  # 在使用移动图像标签时非常有用(例如:latest)
+  pull: false
+
+  golang:
+    runtime: $(BASE_DOCKER_NS)/fabric-baseos:$(ARCH)-$(BASE_VERSION)
+    # whether or not golang chaincode should be linked dynamically
+    # golang链码是否应该动态链接
+    dynamicLink: false
+
+  car:
+    runtime: $(BASE_DOCKER_NS)/fabric-baseos:$(ARCH)-$(BASE_VERSION)
+
+  java:
+    Dockerfile:  |
+      from $(DOCKER_NS)/fabric-javaenv:$(ARCH)-$(PROJECT_VERSION)
+
+  startuptimeout: 300s
+  executetimeout: 30s
+  mode: net
+  keepalive: 0
+  system:
+    cscc: enable
+    lscc: enable
+    escc: enable
+    vscc: enable
+    qscc: enable
+  logging:
+    level:  info
+    shim:   warning
+    format: '%{color}%{time:2006-01-02 15:04:05.000 MST} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}'
+
+ledger:
+  blockchain:
+  state:
+    stateDatabase: goleveldb
+    couchDBConfig:
+      couchDBAddress: 127.0.0.1:5984
+      username:
+      password:
+      maxRetries: 3
+      maxRetriesOnStartup: 10
+      requestTimeout: 35s
+      queryLimit: 10000
+  history:
+    enableHistoryDatabase: true
+
+
+###############################################################################
+#
+#    Operations section
+#
+###############################################################################
+operations:
+  # 帮助地址 https://hyperledger-fabric.readthedocs.io/en/release-1.4/operations_service.html
+  listenAddress: 0.0.0.0:9443
+  tls:
+    enabled: false
+    cert:
+      file:
+    key:
+      file:
+    clientAuthRequired: false
+    clientRootCAs:
+      files: []
+
+###############################################################################
+#
+#    Metrics section
+#
+###############################################################################
+metrics:
+  # metrics provider is one of statsd, prometheus, or disabled
+  provider: disabled
+
+  # statsd configuration
+  statsd:
+    # network type: tcp or udp
+    network: udp
+
+    # statsd server address
+    address: 0.0.0.0:8125
+
+    # the interval at which locally cached counters and gauges are pushed
+    # to statsd; timings are pushed immediately
+    writeInterval: 10s
+
+    # prefix is prepended to all emitted statsd metrics
+    prefix:
