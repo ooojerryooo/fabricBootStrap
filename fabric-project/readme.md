@@ -10,7 +10,7 @@
 ### `一、服务器准备工作`
 执行ready.sh
 
-###` 二、下载Fabric源码`
+### ` 二、下载Fabric源码`
 mkdir -p /root/go/src/github.com/hyperledger
 cd /root/go/src/github.com/hyperledger
 git clone https://github.com/hyperledger/fabric.git
