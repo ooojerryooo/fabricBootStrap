@@ -1,4 +1,4 @@
-##v1.1版本
+## v1.1版本
 * 此版本采用了etcd实现的orderer服务
 ## 基于软件版本
 * HyperLedger Fabric 1.4.1
@@ -7,26 +7,26 @@
 * nodejs8.11.4
 * docker-compose version 1.18.0
 
-###`一、服务器准备工作`
+### `一、服务器准备工作`
 执行ready.sh
 
-###`二、下载Fabric源码`
+###` 二、下载Fabric源码`
 mkdir -p /root/go/src/github.com/hyperledger
 cd /root/go/src/github.com/hyperledger
 git clone https://github.com/hyperledger/fabric.git
 
-###`三、编译源码，生成可执行文件`
+### `三、编译源码，生成可执行文件`
 执行complie.sh
 
 
-###`四、可执行文件赋权、拷贝链码到GOPATHA下`
+### `四、可执行文件赋权、拷贝链码到GOPATHA下`
 
 cd /root/fabric-project
 cp chaincode/ $GOPATH/src/github.com/hyperledger/fabric/examples/chaincode/firstcc
 chmod -R +x *
 
 
-###`五、容器外运行一个简单的fabric网络`
+### `五、容器外运行一个简单的fabric网络`
 
     1、生成证书文件
     ./generateCerts.sh
