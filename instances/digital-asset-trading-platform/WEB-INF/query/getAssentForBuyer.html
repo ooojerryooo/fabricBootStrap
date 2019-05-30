@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>我的资产</title>
+		<script type="text/javascript" src='../../js/jquery-3.3.1.js'></script>
+		<script type="text/javascript" src="../../js/functions.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../css/producemain.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/producestyle.css" />
+		<style type="text/css">
+			.demo {
+				/* width: 860px; */
+				margin: 60px auto 10px auto
+			}
+		</style>
+		<script>
+			$(document).ready(function() {
+            var userId = getCookie("userCode");
+            document.getElementById('MyDownload').action=url_prefix()+"fileDownload";
+            $.ajax({
+                url:url_prefix()+"getAssentForBuyer",
+                dataType: 'json',
+                type: 'post',
+                data:{userId:userId},
+                success:function(data){
+                    var data=eval('('+data+')');//转换为json对象
+                    var str='';
+                    data.forEach(function(value , index ){
+                        str=str+"<li class=\"plan\">\n" +
+                                "\t\t\t\t<ul class=\"planContainer\">\n" +
+                                "\t\t\t\t\t<li class=\"title\"><h2>"+value.Asset.AssetName+"</h2></li>\n" +
+                                "\t\t\t\t\t<li class=\"price\"><p>购买价"+value.Record.TradePrice+"/</p></li>\n" +
+                                "\t\t\t\t\t<li>\n" +
+                                "\t\t\t\t\t\t<ul class=\"options\">\n" +
+                                "\t\t\t\t\t\t\t<li>资产类型："+value.Asset.FileType+"</li>\n" +
+                                "\t\t\t\t\t\t\t<li><span>合约名</span>"+value.Contract.ContractName+"</li>\n" +
+                                "\t\t\t\t\t\t\t<li>使用截止日期："+value.Record.ExpireDate+"</li>\n" +
+                                "\t\t\t\t\t\t\t<li><span></span></li>\n" +
+                                "\t\t\t\t\t\t</ul>\n" +
+                                "\t\t\t\t\t</li>\n" +
+                                "\t\t\t\t\t<li class='button'><a onclick=\"fileDownload('"+value.Record.TxID+"')\">文件下载</a></li>\n" +
+                                "\t\t\t\t</ul>\n" +
+                                "\t\t\t</li>"
+                    })
+                    $('#plans').html(str)
+                }
+            })
+        });
+        function fileDownload(txId){
+            var userId = getCookie("userCode");
+            var privateKey = getCookie("key");
+            $('#txId').val(txId);
+            $('#userId').val(userId);
+            $('#privateKey').val(privateKey);
+            document.MyDownload.submit();
+        }
+    </script>
+	</head>
+	<body>
+		<div id="main">
+			<div class="demo" id="pricePlans">
+				<ul id="plans">
+				</ul>
+			</div>
+			<form action="" name="MyDownload" id="MyDownload" method="post">
+				<input type="hidden" name="txId" id="txId">
+				<input type="hidden" name="userId" id="userId">
+				<input type="hidden" name="privateKey" id="privateKey">
+			</form>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,71 @@
+<link rel="stylesheet" type="text/css" href="../css/main.css" />
+<link rel="stylesheet" type="text/css" href="../css/popbox.css" />
+<script src="../js/jquery-3.3.1.js"></script>
+<script src="../js/functions.js"></script>
+<script src="../js/popbox.js"></script>
+<script>
+	window.onload = function(){
+        var userCode = getCookie("userCode");
+        if (!userCode) window.location.href="login.html";
+        document.getElementById("userId").value = userCode;
+	}
+
+    function check(){
+        if (!document.upload.assetName.value) {
+            popBox.alert("","资产名称不能为空！","alert_red");
+            return false;
+        } else if (!document.upload.assetFile.value) {
+            popBox.alert("","请选择文件！","alert_red");
+            return false;
+        } else {
+            return true;
+        }
+    }
+    function fileUpload(){
+
+        if (!check()) {
+            return false;
+        }
+        var userKey = getCookie("key");
+        var publicKey =getCookie("publicKey")
+		var formdata = new FormData();
+		formdata.append("assetName", $("#assetName").val());
+		formdata.append("assetFile", $("#assetFile")[0].files[0]);
+        formdata.append("userId", $("#userId").val());
+        formdata.append("privateKey", userKey);
+        formdata.append("publicKey",publicKey)
+		$.ajax({
+			url:url_prefix()+"fileUpload",
+			type:"POST",
+			data:formdata,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success:function(result){
+                if (result.event_status == 'INVALID') {
+                    popBox.alert("",result.res_message.message,"alert_red");
+                } else if (result.event_status == 'VALID') {
+                    popBox.alert("","上传成功！","alert_red");
+                    document.getElementById("assetName").value = "";
+                    document.getElementById("assetFile").value = "";
+				}
+			},
+			error : function() {
+				popBox.alert("服务器无响应！");
+			}
+		});
+
+    }
+
+</script>
+<div class="location">您当前位于：资产上传</div>
+<div id="input">
+	<form action="" name="upload" id="upload" enctype="multipart/form-data" method="post" onsubmit="return false" style="text-align: center;">
+		<p><label class="label1" for="assetName">资产名称</label>
+		<input class="text1" type="text" name="assetName" id="assetName" placeholder="请输入资产名称"></p>
+		<p><label class="label1" for="assetFile">选择文件</label>
+		<input class="text1" type="file" name="assetFile" id="assetFile" placeholder="请选择上传文件"></p>
+		<input type="hidden" name="userId" id="userId">
+		<input class="submit1" type="button" value="资产上传" onclick="fileUpload()">
+	</form>
+</div>

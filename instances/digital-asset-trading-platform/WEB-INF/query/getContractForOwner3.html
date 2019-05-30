@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>我发布的的资产合约</title>
+		<script type="text/javascript" src='../../js/jquery-3.3.1.js'></script>
+		<script type="text/javascript" src="../../js/functions.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../css/producemain.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/producestyle.css" />
+		<style type="text/css">
+			.demo {
+				/* width: 860px; */
+				margin: 60px auto 10px auto
+			}
+		</style>
+		<script>
+			$(document).ready(function() {
+				var userId = getCookie("userCode");
+				$.ajax({
+					url: url_prefix() + "getContractForOwner3",
+					dataType: 'json',
+					type: 'post',
+					data: {
+						userId: userId
+					},
+					success: function(data) {
+						var data = eval('(' + data + ')'); //转换为json对象
+						var str = '';
+						data.forEach(function(value, index) {
+							str = str + "<li class=\"plan\">\n" +
+								"\t\t\t\t<ul class=\"planContainer\">\n" +
+								"\t\t\t\t\t<li class=\"title\"><h2>" + value.Record.AssetName + "</h2></li>\n" +
+								"\t\t\t\t\t<li class=\"price\"><p>￥" + value.Record.TradePrice + "/年</p></li>\n" +
+								"\t\t\t\t\t<li>\n" +
+								"\t\t\t\t\t\t<ul class=\"options\">\n" +
+								"\t\t\t\t\t\t\t<li>售价高达：￥" + value.Record.AgentPrice + "年</li>\n" +
+								"\t\t\t\t\t\t\t<li><span>合约名</span>" + value.Record.ContractName + "</li>\n" +
+								"\t\t\t\t\t\t\t<li>售卖截止日期：" + value.Record.ExpireDate + "</li>\n" +
+								"\t\t\t\t\t\t\t<li><span></span></li>\n" +
+								"\t\t\t\t\t\t</ul>\n" +
+								"\t\t\t\t\t</li>\n" +
+								"\t\t\t\t</ul>\n" +
+								"\t\t\t</li>"
+						})
+						$('#plans').html(str)
+					}
+				})
+			});
+		</script>
+	</head>
+	<body>
+		<div id="main">
+			<div class="demo" id="pricePlans">
+				<ul id="plans">
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

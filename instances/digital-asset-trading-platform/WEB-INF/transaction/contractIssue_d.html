@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>发布代理合约</title>
+		<script type="text/javascript" src='../../js/jquery-3.3.1.js'></script>
+		<script type="text/javascript" src="../../js/functions.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../css/producemain.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/producestyle.css" />
+		<style type="text/css">
+			.demo {
+				/* width: 860px; */
+				margin: 60px auto 10px auto
+			}
+
+			.pop {
+				display: none;
+				min-height: 270px;
+				max-height: 750px;
+				height: 300px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 2rem;
+				right: 0;
+				margin: auto;
+				padding: 0.6rem;
+				z-index: 130;
+				border-radius: 8px;
+				background-color: #fff;
+				box-shadow: 0 3px 18px rgba(100, 0, 0, .5);
+			}
+
+			.pop-top {
+				height: 40px;
+				width: 100%;
+				border-bottom: 1px #E5E5E5 solid;
+			}
+
+			.pop-top h2 {
+				float: left;
+			}
+
+			.pop-top span {
+				float: right;
+				cursor: pointer;
+				font-weight: bold;
+			}
+
+			.pop-foot {
+				height: 50px;
+				line-height: 50px;
+				width: 100%;
+				border-top: 1px #E5E5E5 solid;
+				text-align: right;
+			}
+
+			.pop-cancel,
+			.pop-ok {
+				padding: 8px 15px;
+				margin: 15px 5px;
+				border: none;
+				border-radius: 5px;
+				background-color: #337AB7;
+				color: #fff;
+				cursor: pointer;
+			}
+
+			.pop-cancel {
+				background-color: #FFF;
+				border: 1px #CECECE solid;
+				color: #000;
+			}
+
+			.pop-content {
+				height: 210px;
+			}
+
+			.pop-content-left {
+				float: left;
+			}
+
+			.pop-content-right {
+				width: 290px;
+				float: left;
+				padding-top: 20px;
+				/* padding-left: 20px; */
+				font-size: 16px;
+				line-height: 35px;
+			}
+
+			.bgPop {
+				display: none;
+				position: absolute;
+				z-index: 129;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, .2);
+			}
+		</style>
+		<script>
+			$(document).ready(function() {
+            var userId = getCookie("userCode");
+            var privateKey = getCookie("key");
+            $.ajax({
+                url:url_prefix()+"getAssentForOwner",
+                dataType: 'json',
+                type: 'post',
+                data:{userId:userId},
+                success:function(data){
+                    var data=eval('('+data+')');//转换为json对象
+                    var str='';
+                    data.forEach(function(value , index ){
+                        str=str+"<li class=\"plan\">\n" +
+                            "\t\t\t\t<ul class=\"planContainer\">\n" +
+                            "\t\t\t\t\t<li class=\"title\"><h2>"+value.Record.AssetName+"</h2></li>\n" +
+                            "\t\t\t\t\t<li class=\"price\"><p>"+value.Record.FileType+"/</p></li>\n" +
+                            "\t\t\t\t\t<li class='button'><input type='hidden' value='"+value.Record.AssetID+"'>" +
+                                "<a href='javascript:void(0)' class='click_pop'>发布代理合约</a></li>\n" +
+                            "\t\t\t\t</ul>\n" +
+                            "\t\t\t</li>"
+                    })
+                    $('#plans').html(str)
+                    $('.pop-close').click(function () {
+                        $('.bgPop,.pop').hide();
+                    });
+                    $('.click_pop').click(function () {
+                        $('#AssetID').val($(this).prev().val());
+                        $('.bgPop,.pop').show();
+                    });
+                    //合约发布
+                    $('.pop-ok').click(function () {
+                        $.ajax({
+                            url:url_prefix()+"contractIssue",
+                            dataType: 'json',
+                            type: 'post',
+                            data:{
+                                userId:userId,
+                                privateKey:privateKey,
+                                authority:'sell',
+                                assetId:$('#AssetID').val(),
+                                contractName:$('#contractName').val(),
+                                expireDate:$('#expireDate').val(),
+                                tradePrice:$('#tradePrice').val(),
+                                agentContractExpireDate:$('#agentContractExpireDate').val(),
+                                agentPrice:$('#agentPrice').val()
+                                },
+                            success:function(data){
+                                if(data["event_status"] == "INVALID") {
+                                    alert("代理合约发布失败！");
+                                } else if(data["event_status"] == "VALID") {
+                                    alert("代理合约发布成功！");
+                                }
+                            },
+                            complete:function(){
+                                $('.bgPop,.pop').hide();
+                            }
+                        })
+                    });
+                }
+            })
+        });
+    </script>
+	</head>
+	<body>
+		<div id="main">
+			<div class="demo" id="pricePlans">
+				<ul id="plans">
+				</ul>
+			</div>
+		</div>
+		<!--遮罩层-->
+		<div class="bgPop"></div>
+		<!--弹出框-->
+		<div class="pop">
+			<div class="pop-top">
+				<h2>代理合约发布</h2>
+				<span class="pop-close">Ｘ</span>
+			</div>
+			<div class="pop-content">
+				<div class="pop-content-left">
+					<img src="" alt="" class="teathumb">
+				</div>
+				<div class="pop-content-right">
+					<p>合约名称：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<b class="lname"></b><input type="text" id="contractName"></p>
+					<p>过期时间：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<b class="price"></b><input type="text" id="expireDate"></p>
+					<p>代理过期时间：<input type="text" id="agentContractExpireDate"></p>
+					<p>交易价格：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="tradePrice"></p>
+					<p>代理价格：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="agentPrice"></p>
+					<input type="hidden" id="AssetID">
+				</div>
+			</div>
+			<div class="pop-foot">
+				<input type="button" value="关闭" class="pop-cancel pop-close">
+				<input type="button" value="发布" class="pop-ok">
+			</div>
+		</div>
+	</body>
+</html>

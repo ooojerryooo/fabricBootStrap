@@ -338,32 +338,32 @@ Profiles:
             OrdererType: etcdraft
             EtcdRaft:
                 Consenters:
-                    - Host: orderer.example.com
+                    - Host: orderer.hwsj.com
                       Port: 7050
-                      ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-                      ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-                    - Host: orderer2.example.com
+                      ClientTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer.hwsj.com/tls/server.crt
+                      ServerTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer.hwsj.com/tls/server.crt
+                    - Host: orderer2.hwsj.com
                       Port: 7050
-                      ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
-                      ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
-                    - Host: orderer3.example.com
+                      ClientTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer2.hwsj.com/tls/server.crt
+                      ServerTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer2.hwsj.com/tls/server.crt
+                    - Host: orderer3.hwsj.com
                       Port: 7050
-                      ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
-                      ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
-                    - Host: orderer4.example.com
+                      ClientTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer3.hwsj.com/tls/server.crt
+                      ServerTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer3.hwsj.com/tls/server.crt
+                    - Host: orderer4.hwsj.com
                       Port: 7050
-                      ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/server.crt
-                      ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/server.crt
-                    - Host: orderer5.example.com
+                      ClientTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer4.hwsj.com/tls/server.crt
+                      ServerTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer4.hwsj.com/tls/server.crt
+                    - Host: orderer5.hwsj.com
                       Port: 7050
-                      ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt
-                      ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt
+                      ClientTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer5.hwsj.com/tls/server.crt
+                      ServerTLSCert: ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer5.hwsj.com/tls/server.crt
             Addresses:
-                - orderer.example.com:7050
-                - orderer2.example.com:7050
-                - orderer3.example.com:7050
-                - orderer4.example.com:7050
-                - orderer5.example.com:7050
+                - orderer.hwsj.com:7050
+                - orderer2.hwsj.com:7050
+                - orderer3.hwsj.com:7050
+                - orderer4.hwsj.com:7050
+                - orderer5.hwsj.com:7050
 
             Organizations:
                 - *OrdererOrg

@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../common/css/mui.css" rel="stylesheet" />
+		<link href="../common/css/reset.css" rel="stylesheet" />
+		<script src="../common/js/mui.js"></script>
+		<script src="../common/js/rem.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">数字资产交易平台</h1>
+		</header>
+		<div class="mui-content">
+		</div>
+		<div id="slider" class="mui-slider">
+			<div class="mui-slider-group mui-slider-loop">
+				<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img class="show-slider-img" src="../images/logo.gif">
+					</a>
+				</div>
+				<!-- 第一张 -->
+				<div class="mui-slider-item">
+					<a href="#">
+						<img class="show-slider-img" src="../images/logo.jpg">
+					</a>
+				</div>
+				<!-- 第二张 -->
+				<div class="mui-slider-item">
+					<a href="#">
+						<img class="show-slider-img" src="../images/alert_green.png">
+					</a>
+				</div>
+				<!-- 第三张 -->
+				<div class="mui-slider-item">
+					<a href="#">
+						<img class="show-slider-img" src="../images/user.png">
+					</a>
+				</div>
+				<!-- 第四张 -->
+				<div class="mui-slider-item">
+					<a href="#">
+						<img class="show-slider-img" src="../images/alert_red.png">
+					</a>
+				</div>
+				<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img class="show-slider-img" src="../images/alert_blue.png">
+					</a>
+				</div>
+			</div>
+			<div class="mui-slider-indicator">
+				<div class="mui-indicator mui-active"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+			</div>
+		</div>
+		<p class="recommend-p">
+			<b>推荐</b>
+		</p>
+		<div class="row-div">
+			<ul>
+				<li>
+					<h1>标题</h1>
+					<p>名称<br>时间</p>
+					<h2>价格</h2>
+				</li>
+			</ul>
+		</div>
+		<p class="recommend-p">
+			<b>热门资产</b>
+		</p>
+		<div class="column-div">
+			<ul>
+				<li>
+					<div><img src="../images/alert_blue.png" /></div>
+					<h1>标题</h1><span>价格</span>
+					<p>类型<br>时间</p>
+				</li>
+				<li>
+					<div><img src="../images/alert_blue.png" /></div>
+					<h1>标题</h1><span>价格</span>
+					<p>类型<br>时间</p>
+				</li>
+				<li>
+					<div><img src="../images/alert_blue.png" /></div>
+					<h1>标题</h1><span>价格</span>
+					<p>类型<br>时间</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						Item 1
+					</a>
+				</li>
+			</ul>
+		</div>
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="#">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="#">
+				<span class="mui-icon mui-icon-email"></span>
+				<span class="mui-tab-label">咨询</span>
+			</a>
+			<a class="mui-tab-item" href="#">
+				<span class="mui-icon mui-icon-contact"></span>
+				<span class="mui-tab-label">发布</span>
+			</a>
+			<a class="mui-tab-item" href="#">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">消息</span>
+			</a>
+			<a class="mui-tab-item" href="#">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+		<div style="height: 0.6rem;"></div>
+
+		<script type="text/javascript">
+			mui.init();
+			var slider = mui("#slider");
+			slider.slider({
+				interval: 1000
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,21 @@
+<link rel="stylesheet" type="text/css" href="../css/main.css" />
+<script src="../js/functions.js"></script>
+<script>
+	var userCode = getCookie("userCode");
+	if (!userCode) window.location.href="login.html";
+</script>
+<div class="location">您当前位于：发布代理合约</div>
+<div id="input">
+	<form action="" enctype="multipart/form-data" method="post">
+		<p><label class="label1" for="assetName">资产名称</label><input class="text1" type="text" name="assetName"></p>
+		<p><label class="label1" for="contractName">合约名称</label><input class="text1" type="text" name="contractName"></p>
+		<p><label class="label1" for="tradePrice">交易价格</label><input class="text1" type="text" name="tradePrice"></p>
+		<p><label class="label1" for="tradePrice">代理价格</label><input class="text1" type="text" name="tradePrice"></p>
+		<p><label class="label1" for="expireDate">当前合约有效期</label><input class="text1" type="text" name="expireDate"></p>
+		<p><label class="label1" for="agentExpireDate">代理合约有效期</label><input class="text1" type="text" name="agentExpireDate"></p>
+		<input class="submit1" type="submit" value="合约发布">
+	</form>
+</div>
+
+
+

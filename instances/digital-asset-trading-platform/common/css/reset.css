@@ -1,0 +1,18 @@
+
+body,div,ul,ol,dt,dd,dl,li,h1,h2,h3,h4,h5,h6,form,input,select,textarea,p,img,a,span,strong,*{ padding:0; margin:0;}
+body{ font-size:12px; font-family:MicrosoftYaHei; color:#000000;}
+ul,ol,li{ list-style:none;}
+h1,h2,h3,h4,h5,h6{ font-size:14px;}
+img,input,select,textarea{ vertical-align:middle}
+img{ border:none;}
+a{text-decoration:none;}
+a:hover{text-decoration: none;}
+
+.clearfix::after{
+    content: '';
+    display: block;
+    font-size: 0;
+    visibility: hidden;
+    height: 0;
+    clear: both;
+}

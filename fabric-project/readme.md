@@ -1,9 +1,11 @@
+##v1.1版本
+* 此版本采用了etcd实现的orderer服务
 ## 基于软件版本
-* HyperLedger Fabric 1.4
+* HyperLedger Fabric 1.4.1
 * go1.12.5.linux-amd64
 * docker 18.06.3-ce
 * nodejs8.11.4
-* docker-compose18
+* docker-compose version 1.18.0
 
 ###`一、服务器准备工作`
 执行ready.sh

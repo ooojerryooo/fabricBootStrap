@@ -1,0 +1,174 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Optima, sans-serif;
+	background-color: white;
+}
+
+a:link {
+	color: #055;
+}
+
+a:visited {
+	color: #404;
+}
+
+header {
+	padding-top: 0.4rem;
+	color: #00a9a7;
+	text-align: center;
+}
+
+#center-div {
+	margin: 0 auto;
+	display: inline-block;
+}
+
+header h1,
+h2 {
+	margin: 0 auto;
+}
+
+header h1 {
+	color: FFFF00;
+	font-size: 250%;
+}
+
+header h2 {
+	font-weight: normal;
+	font-style: italic;
+}
+
+#logo {
+	float: left;
+	margin-top: 1em;
+}
+
+#sitenav {
+	color: #778899;
+	float: left;
+	margin-top: 2em;
+	margin-left: 0.5em;
+	font-size: 20px;
+}
+
+#sitenav ul {
+	padding: 0;
+	margin: 0;
+	display: inline;
+	font-size: 90%;
+	text-align: center
+}
+
+#sitenav li {
+	display: inline;
+	padding-left: 1em;
+	margin-left: lem;
+}
+
+#sitenav li a {
+	color: #778899;
+}
+
+#sitenav li a:link,
+#sitenav li a:visited {
+	color: #778899;
+	text-decoration: none;
+}
+
+#sitenav li a:hover {
+	color: #DDDD00;
+}
+
+#sitenav ul li ul li {
+	display: none;
+	float: none;
+	padding-top: 2em;
+	width: 150px;
+	text-align: left;
+	font-size: 80%;
+}
+
+#sitenav ul li {
+	position: relative;
+}
+
+#sitenav ul li ul {
+	position: absolute;
+	top: 1em;
+	left: 0;
+	z-index: 9999;
+}
+
+#sitenav ul li:hover ul li {
+	display: block;
+}
+
+#main {
+	clear: both;
+	padding-top: 2em;
+	border-style: none;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.location {
+	font-family: Optima;
+	font-style: italic;
+	color: grey;
+	margin-bottom: 2em
+}
+
+.text1 {
+	margin-left: 0.3rem;
+	text-align: left;
+	width: 200px;
+	border: solid #ccc 1px;
+	height: 0.25rem;
+	border: 1px solid #ddd;
+	outline: none;
+}
+
+.label1 {
+	display: inline-block;
+	/* width: 60px; */
+	text-align: right;
+}
+
+.submit1 {
+	/* margin-left: 1.5rem; */
+	width: 80px;
+	height: 30px;
+	background: #00a9a726;
+	border: 1px solid #99D3F5;
+	border-radius: 4px;
+	color: #00a9a7;
+	line-height: 30px;
+}
+
+.noDisplay {
+	display: none
+}
+
+#userInfo p {
+	line-height: 0.5rem;
+}
+
+#userInfo p label {
+	width: 60px;
+}
+
+/* 欢迎页展示用户名 */
+.show-user {
+	padding-top: 0.3rem;
+	text-align: center;
+}
+
+.show-user a {
+	color: #00a9a7;
+	text-decoration: none;
+}
+
+#upload p input {
+	height: 1.6rem;
+}

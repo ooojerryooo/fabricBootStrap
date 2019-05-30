@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="screen-orientation" content="portrait">
+		<!--uc强制竖屏-->
+		<meta name="x5-orientation" content="portrait"> <!-- QQ强制竖屏-->
+		<!--设置页面不缓存-->
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="expires" content="0">
+		<meta name="viewport" content="width=device-width, initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<title>数字资产交易平台</title>
+		<link href="../css/indexstyle.css" rel="stylesheet" type="text/css" />
+		<link href="../common/css/reset.css" rel="stylesheet" type="text/css" />
+		<script src="../js/jquery-3.3.1.js" type="text/javascript"></script>
+		<script src="../js/functions.js"></script>
+		<script src="../common/js/rem.js"></script>
+		<script>
+			//         var userCode = getCookie("userCode");
+			//         if (!userCode) window.location.href="login.html";
+		</script>
+	</head>
+	<body>
+		<div class="header">
+			<a href="#" class="logo fleft"><img src="../images/logo.jpg" /></a>
+			<div class="nav fleft">
+				<ul>
+					<li class="nav_i r_ind_nav">
+						<span><a href="welcome.html" target="frame">首页</a></span>
+					</li>
+					<li class="nav_i">
+						<span><a href="#">资产管理</a></span>
+						<div class="nav2 nav2_hover">
+							<ul>
+								<li><a href="query/getAssentForOwner.html" target="frame">我上传的资产</a></li>
+								<li><a href="query/getAssentForBuyer.html" target="frame">我购买的资产</a></li>
+								<li class="r_nav_none">
+									<a href="assetsUpload.html" target="frame">资产上传</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav_i">
+						<span><a href="#">合约发布</a></span>
+						<div class="nav2 nav2_hover">
+							<ul>
+								<li><a href="transaction/contractIssue_z.html" target="frame">发布直销合约</a></li>
+								<li class="r_nav_none">
+									<a href="transaction/contractIssue_d.html" target="frame">发布代理合约</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav_i">
+						<span><a href="#">产权购买</a></span>
+						<div class="nav2 nav2_hover">
+							<ul>
+								<li><a href="transaction/getContractList.html" target="frame">资产合约购买</a></li>
+								<li class="r_nav_none"><a href="transaction/getContractList2.html" target="frame">代理合约购买</a></li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav_i">
+						<span><a href="#">信息查询</a></span>
+						<div class="nav2 nav2_hover">
+							<ul>
+								<li><a href="query/getAssentForOwner.html" target="frame">我的资产</a></li>
+								<!-- <li><a href="query/getContractForOwner2.html" target="frame">我发布的直销合约</a></li> -->
+								<li><a href="query/getContractForOwner.html" target="frame">我发布的代理合约</a></li>
+								<li><a href="query/getAssentForBuyer.html" target="frame">我的资产使用权</a></li>
+								<li><a href="query/getTransactionForUserTable.html" target="frame">我的交易流水</a></li>
+								<li class="r_nav_none"><a href="query/getAccountForUser.html" target="frame">我的账户</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(".nav .nav_i").hover(function() {
+				$(".nav .nav_i").removeClass("r_ind_nav");
+				$(this).addClass("r_ind_nav");
+			});
+			$(".nav2 li").hover(function() {
+				$(this).addClass("r_i_xuan_z");
+				$(this).find(".nav2_1").show();
+			}, function() {
+				$(this).removeClass("r_i_xuan_z");
+				$(this).find(".nav2_1").hide();
+			});
+		</script>
+		<div style="text-align:center;margin:10px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+			<iframe id="frame" name="frame" height="450px" style="text-align:center; font:normal 14px/24px 'MicroSoft YaHei';"
+			 src="welcome.html" frameborder="no"></iframe>
+		</div>
+	</body>
+</html>

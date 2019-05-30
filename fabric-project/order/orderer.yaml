@@ -9,6 +9,40 @@ General:
     RootCAs:
       - ../crypto-config/ordererOrganizations/hwsj.com/orderers/orderer.hwsj.com/tls/ca.crt
     ClientRootCAs:
+  # 保持连接设置 for the GRPC server.
+  Keepalive:
+    # ServerMinInterval是客户机ping之间允许的最小时间间隔.
+    # 如果客户端更频繁地发送ping信号，服务器将断开它们的连接。
+    ServerMinInterval: 60s
+    # ServerInterval是ping到客户之间的时间.
+    ServerInterval: 7200s
+    # ServerTimeout是服务器在关闭连接之前等待客户机响应的时间。
+    ServerTimeout: 20s
+
+  # 用于与其他ordering服务节点通信的ordering服务节点的群集设置
+  # 例如基于Raft的ordering服务.
+  Cluster:
+    # SendBufferSize是出口缓冲区中消息的最大数量。
+    # 如果缓冲区已满，则删除协商一致消息，事务消息等待释放空间。
+    SendBufferSize: 10
+    # ClientCertificate管理用于与其他订购服务节点建立相互TLS连接的客户机TLS证书的文件位置。
+    ClientCertificate:
+    # ClientPrivateKey管理客户端TLS证书的私钥的文件位置。
+    ClientPrivateKey:
+
+    # 下面的4个属性应该一起设置，或者一起取消设置。
+    # 如果设置了它们，那么orderer节点将使用一个单独的侦听器进行集群内通信。如果未设置，则使用常规orderer侦听器。
+    # 如果您想在面向客户端和集群内部侦听器上使用不同的TLS服务器证书，这将非常有用。
+
+    # ListenPort定义集群侦听连接的端口。
+    ListenPort:
+    # ListenAddress定义监听集群内部通信的IP。
+    ListenAddress:
+    # ServerCertificate定义用于集群内部通信的服务器TLS证书的文件位置。
+    ServerCertificate:
+    # ServerPrivateKey定义了TLS证书私钥的文件位置。
+    ServerPrivateKey:
+
   GenesisMethod: file
   GenesisProfile: TwoOrgsOrdererGenesis
   GenesisFile: genesis.block
@@ -58,12 +92,9 @@ Kafka:
   Version:
 
 ################################################################################
-#
 #   Debug Configuration
-#
 #   - This controls the debugging options for the orderer
 #   - 这将控制orderer的调试选项
-#
 ################################################################################
 Debug:
 
@@ -75,12 +106,8 @@ Debug:
   # 当设置DeliverTraceDir时，将导致此定购程序对交付服务的每个请求被写入此目录中的文件
   DeliverTraceDir:
 ################################################################################
-#
 #   Operations Configuration
-#
-#   - This configures the operations server endpoint for the orderer
 #   - 这将为orderer配置操作服务器端点
-#
 ################################################################################
 Operations:
   # host and port for the operations server
@@ -107,12 +134,8 @@ Operations:
     ClientRootCAs: []
 
 ################################################################################
-#
 #   Metrics  Configuration
-#
-#   - This configures metrics collection for the orderer
 #   - 这将为orderer配置度量集合
-#
 ################################################################################
 Metrics:
   # The metrics provider is one of statsd, prometheus, or disabled
@@ -129,3 +152,19 @@ Metrics:
     WriteInterval: 30s
     # The prefix is prepended to all emitted statsd metrics
     Prefix: OrdererOrg
+
+
+################################################################################
+#   共识配置
+#   - 本节包含共识插件的配置选项。它对于orderer是不透明的，并且完全可以使用一致的实现。
+################################################################################
+Consensus:
+  # The allowed key-value pairs here depend on consensus plugin. For etcd/raft,
+  # 这里允许的键值对依赖于共识插件。对于etcd/raft,
+  # 我们使用以下选项:
+
+  # WALDir指定存储etcd/raft的写前日志的位置。每个通道都有自己的子目录，以通道ID命名。
+  WALDir: /var/hyperledger/production/orderer/etcdraft/wal
+
+  # SnapDir指定存储etcd/raft快照的位置。每个通道都有自己的子目录，以通道ID命名。
+  SnapDir: /var/hyperledger/production/orderer/etcdraft/snapshot

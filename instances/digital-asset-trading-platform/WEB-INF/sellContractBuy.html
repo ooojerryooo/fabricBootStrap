@@ -1,0 +1,27 @@
+<link rel="stylesheet" type="text/css" href="../css/main.css"  />
+<link rel="stylesheet" type="text/css" href="../css/popbox.css" />
+<script src="../js/jquery-3.3.1.js"></script>
+<script src="../js/functions.js"></script>
+<script src="../js/popbox.js"></script>
+<script>
+    window.onload = function(){
+        var userCode = getCookie("userCode");
+        var privateKey = getCookie("key");
+        if (!userCode) window.location.href="login.html";
+        document.getElementById("userId").value = userCode;
+        document.getElementById("privateKey").value = privateKey;
+    }
+
+</script>
+<div class="location">您当前位于：购买资产代理权</div>
+<div id="input">
+    <form action="http://10.0.116.28:8002/trade" name="contractBuy" id="contractBuy" method="post">
+        <p><label class="label1" for="txId">合约ID</label><input class="text1" type="text" name="contractID" id="contractID"></p>
+        <p><label class="label1" for="txId">代理合约名称</label><input class="text1" type="text" name="contractName" id="contractName"></p>
+        <input type="hidden" name="userId" id="userId">
+        <input type="hidden" name="privateKey" id="privateKey">
+        <input class="submit1" type="submit" value="BUY">
+    </form>
+</div>
+
+

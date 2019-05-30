@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>产品列表</title>
+		<script type="text/javascript" src='../../js/jquery-3.3.1.js'></script>
+		<script type="text/javascript" src="../../js/functions.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../css/producemain.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/producestyle.css" />
+		<style type="text/css">
+			.demo {
+				/* width: 860px; */
+				margin: 60px auto 10px auto
+			}
+
+			.pop {
+				display: none;
+				min-height: 270px;
+				max-height: 750px;
+				height: 270px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 2rem;
+				right: 0;
+				margin: auto;
+				padding: 0.6rem;
+				z-index: 130;
+				border-radius: 8px;
+				background-color: #fff;
+				box-shadow: 0 3px 18px rgba(100, 0, 0, .5);
+			}
+
+			.pop-top {
+				height: 40px;
+				width: 100%;
+				border-bottom: 1px #E5E5E5 solid;
+			}
+
+			.pop-top h2 {
+				float: left;
+			}
+
+			.pop-top span {
+				float: right;
+				cursor: pointer;
+				font-weight: bold;
+			}
+
+			.pop-foot {
+				height: 50px;
+				line-height: 50px;
+				width: 100%;
+				border-top: 1px #E5E5E5 solid;
+				text-align: right;
+			}
+
+			.pop-cancel,
+			.pop-ok {
+				padding: 8px 15px;
+				margin: 15px 5px;
+				border: none;
+				border-radius: 5px;
+				background-color: #337AB7;
+				color: #fff;
+				cursor: pointer;
+			}
+
+			.pop-cancel {
+				background-color: #FFF;
+				border: 1px #CECECE solid;
+				color: #000;
+			}
+
+			.pop-content {
+				height: 180px;
+			}
+
+			.pop-content-left {
+				float: left;
+			}
+
+			.pop-content-right {
+				/* width: 310px; */
+				float: left;
+				padding-top: 20px;
+				padding-left: 20px;
+				font-size: 16px;
+				line-height: 35px;
+			}
+
+			.bgPop {
+				display: none;
+				position: absolute;
+				z-index: 129;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, .2);
+			}
+		</style>
+		<script>
+			$(document).ready(function() {
+            var userId = getCookie("userCode");
+            var privateKey = getCookie("key");
+            $.ajax({
+                url:url_prefix()+"getContractList",
+                dataType: 'json',
+                type: 'post',
+                data:{userId:userId},
+                success:function(data){
+                    var data=eval('('+data+')');//转换为json对象
+                    var str='';
+                    data.forEach(function(value , index ){
+                        var a=''
+                        var b=''
+                        if(value.Record.IsAgent=='true'){a="代理"}else{a="直销"}
+                        if(value.isBuy=="false"){
+                            b="<a href='javascript:void(0)' class='click_pop'>点击购买</a>"
+                        }
+                        else if(value.isBuy=="true"){
+                            b="<a>已购买</a>"
+                        }
+                        if(value.Record.Authority=='sell'&&value.Record.OwnerID!=userId){
+                            str=str+"<li class=\"plan\">\n" +
+                                    "\t\t\t\t<ul class=\"planContainer\">\n" +
+                                    "\t\t\t\t\t<li class=\"title\"><h2>"+value.Record.AssetName+"</h2></li>\n" +
+                                    "\t\t\t\t\t<li class=\"price\"><p>卖价：￥"+value.Record.TradePrice+"/年</p></li>\n" +
+                                    "\t\t\t\t\t<li>\n" +
+                                    "\t\t\t\t\t\t<ul class=\"options\">\n" +
+                                    "\t\t\t\t\t\t\t<li>售价高达：￥"+value.Record.AgentPrice+"年</li>\n" +
+                                    "\t\t\t\t\t\t\t<li><span>合约名</span>"+value.Record.ContractName+"</li>\n" +
+                                    "\t\t\t\t\t\t\t<li>售卖截止日期："+value.Record.ExpireDate+"</li>\n" +
+                                    "\t\t\t\t\t\t\t<li><span>"+a+"</span><span style='color: red'> 过期不售</span></li>\n" +
+                                    "\t\t\t\t\t\t</ul>\n" +
+                                    "\t\t\t\t\t</li>\n" +
+                                    "\t\t\t\t\t<li class='button'>" +
+                                        "<input type='hidden' value='"+value.Record.ContractID+"'>"+b+"</li>\n" +
+                                    "\t\t\t\t</ul>\n" +
+                                    "\t\t\t</li>"
+                        }
+                    })
+                    $('#plans').html(str)
+
+                    $('#plans').html(str)
+                    $('.pop-close').click(function () {
+                        $('.bgPop,.pop').hide();
+                    });
+                    $('.click_pop').click(function () {
+                        $('#ContractID').val($(this).prev().val());
+                        $('.bgPop,.pop').show();
+                    });
+
+                    //代理合约购买
+                    $('.pop-ok').click(function () {
+                        $.ajax({
+                            url:url_prefix()+"trade",
+                            dataType: 'json',
+                            type: 'post',
+                            data:{
+                                userId:userId,
+                                privateKey:privateKey,
+                                contractName:$('#contractName').val(),
+                                contractID:$('#ContractID').val()
+                            },
+                            success:function(data){
+                                if(data["event_status"] == "INVALID") {
+                                    alert("购买失败！");
+                                } else if(data["event_status"] == "VALID") {
+                                    alert("购买成功！");
+                                }
+                            },
+                            complete:function(){
+                                $('.bgPop,.pop').hide();
+                            }
+                        })
+                    });
+                }
+            })
+        });
+    </script>
+	</head>
+	<body>
+		<div id="main">
+			<div class="demo" id="pricePlans">
+				<ul id="plans">
+				</ul>
+			</div>
+		</div>
+		<!--遮罩层-->
+		<div class="bgPop"></div>
+		<!--弹出框-->
+		<div class="pop">
+			<div class="pop-top">
+				<h2>合约发布</h2>
+				<span class="pop-close">Ｘ</span>
+			</div>
+			<div class="pop-content">
+				<div class="pop-content-left">
+					<img src="" alt="" class="teathumb">
+				</div>
+				<div class="pop-content-right">
+					<p>合约名称：<b class="lname"></b><input type="text" id="contractName"></p>
+					<input type="hidden" id="ContractID">
+				</div>
+			</div>
+			<div class="pop-foot">
+				<input type="button" value="关闭" class="pop-cancel pop-close">
+				<input type="button" value="购买" class="pop-ok">
+			</div>
+		</div>
+	</body>
+</html>

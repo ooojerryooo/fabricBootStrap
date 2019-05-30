@@ -1,0 +1,28 @@
+<link rel="stylesheet" type="text/css" href="../css/main.css"  />
+<link rel="stylesheet" type="text/css" href="../css/popbox.css" />
+<script src="../js/jquery-3.3.1.js"></script>
+<script src="../js/functions.js"></script>
+<script src="../js/popbox.js"></script>
+<script>
+    window.onload = function(){
+        var userCode = getCookie("userCode");
+        var privateKey = getCookie("key");
+        if (!userCode) window.location.href="login.html";
+        document.getElementById("userId").value = userCode;
+        document.getElementById("privateKey").value = privateKey;
+        document.getElementById('download').action=url_prefix()+"fileDownload";
+    }
+
+</script>
+<div class="location">您当前位于：资产下载</div>
+<div id="input">
+    <form action="" name="download" id="download" method="post">
+        <p><label class="label1" for="txId">交易ID</label>
+        <input class="text1" type="text" name="txId" id="txId"></p>
+        <input  type="hidden" name="userId" id="userId">
+        <input  type="hidden" name="privateKey" id="privateKey">
+        <input class="submit1" type="submit" value="资产下载">
+    </form>
+</div>
+
+

@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>产品列表</title>
+    <script type="text/javascript" src='../../js/jquery-3.3.1.js'></script>
+    <script type="text/javascript" src="../../js/functions.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/producemain.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/producestyle.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/buttons.css" />
+    <style type="text/css">
+        .demo{/* width:860px; */ margin:60px auto 10px auto}
+        table.altrowstable {
+            font-family: verdana,arial,sans-serif;
+            font-size:11px;
+            color:#333333;
+            border-width: 1px;
+            border-color: #a9c6c9;
+            border-collapse: collapse;
+        }
+        table.altrowstable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #a9c6c9;
+        }
+        table.altrowstable td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #a9c6c9;
+        }
+        .oddrowcolor{
+            background-color:#d4e3e5;
+        }
+        .evenrowcolor{
+            background-color:#c3dde0;
+        }
+    </style>
+    <script>
+        function altRows(id){
+            if(document.getElementsByTagName){
+                var table = document.getElementById(id);
+                var rows = table.getElementsByTagName("tr");
+                for(i = 0; i < rows.length; i++){
+                    if(i % 2 == 0){
+                        rows[i].className = "evenrowcolor";
+                    }else{
+                        rows[i].className = "oddrowcolor";
+                    }
+                }
+            }
+        }
+        $(document).ready(function() {
+            var userId = getCookie("userCode");
+            $.ajax({
+                url:url_prefix()+"getTransactionForUser",
+                dataType: 'json',
+                type: 'post',
+                data:{userId:userId,txType:"buyassent"},
+                success:function(data){
+                    var data=eval('('+data+')');//转换为json对象
+                    var str='<table class=\"altrowstable\" id=\"alternatecolor\">';
+                    str=str+"<tr><th>资产</th><th>交易价格</th><th>金额</th><th>合约名</th><th>交易日</th><th>卖家</th></tr>";
+                    data.forEach(function(value , index ){
+                        var seller=''
+                        if(value.Record.AgentID==''||value.Record.AgentID==null){
+                            seller=value.Record.OwnerID
+                        } else{
+                            seller=value.Record.AgentID
+                        }
+                        str=str+"<tr><td>"+
+                                value.Asset.AssetName+"</td><td>"+
+                                value.Record.TradePrice+"</td><td>"+
+                                value.Record.TradePrice+"</td><td>"+
+                                value.Contract.ContractName+"</td><td>"+
+                                value.Record.TxDate+"</td><td>"+
+                                seller+"</td></tr>";
+                    })
+                    str=str+"</table>"
+                    $('#plans').html(str)
+                    //渲染表格
+                    //altRows('alternatecolor');
+                }
+            })
+
+            $(".button-primary").on("click",function(){
+                var txType=$(this).attr("name")
+                $.ajax({
+                    url:url_prefix()+"getTransactionForUser",
+                    dataType: 'json',
+                    type: 'post',
+                    data:{userId:userId,txType:txType},
+                    success:function(data){
+                        var data=eval('('+data+')');//转换为json对象
+                        var str='<table class=\"altrowstable\" id=\"alternatecolor\">';
+
+                        if(txType=='buyassent'){
+                            str=str+"<tr><th>资产</th><th>交易价格</th><th>花费金额</th><th>合约名</th><th>交易日</th><th>卖家</th></tr>";
+                        }else if(txType=='sellassent'){
+                            str=str+"<tr><th>资产</th><th>交易价格</th><th>收入金额</th><th>合约名</th><th>交易日</th><th>买家</th></tr>";
+                        }else if(txType=='agentsellassent'){
+                            str=str+"<tr><th>资产</th><th>交易价格</th><th>收入金额</th><th>合约名</th><th>交易日</th><th>买家</th></tr>";
+                        }else{
+                            str=str+"<tr><th>资产</th><th>交易价格</th><th>合约</th><th>合约名</th><th>交易日</th><th>买家</th></tr>";
+                        }
+                        data.forEach(function(value , index ){
+                            var a='',b=''
+                            if(txType=='buyassent'||txType=='buycontract'){
+                                if(value.Record.AgentID==''||value.Record.AgentID==null){
+                                    a=value.Record.OwnerID
+                                } else{
+                                    a=value.Record.AgentID
+                                }
+                                if(txType=='buyassent'){
+                                    b=value.Record.TradePrice
+                                }else{
+                                    b="购入代理合约"
+                                }
+                            }else{
+                                a=value.Record.BuyerID
+                                if(txType=='sellcontract'){
+                                    b="卖出代理合约"
+                                }else if(txType=='sellassent'){
+                                    if(value.Record.AgentPrice==0||value.Record.AgentPrice==''||value.Record.AgentPrice==null){
+                                        b=value.Record.TradePrice
+                                    }else{
+                                        b=value.Record.AgentPrice
+                                    }
+                                }else{
+                                    b=(value.Record.TradePrice-value.Record.AgentPrice)
+                                }
+                            }
+                            str=str+"<tr><td>"+
+                                    value.Asset.AssetName+"</td><td>"+
+                                    value.Record.TradePrice+"</td><td>"+
+                                    b+"</td><td>"+
+                                    value.Contract.ContractName+"</td><td>"+
+                                    value.Record.TxDate+"</td><td>"+
+                                    a+"</td></tr>";
+                        })
+                        $('#plans').html(str)
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="main">
+    <div class="demo" id="pricePlans">
+        <a href="#" class="button button-glow button-border button-rounded button-primary" id="but1" name="buyassent">买入流水</a>
+        <a href="#" class="button button-glow button-border button-rounded button-primary" id="but2" name="sellassent">卖出流水</a>
+        <a href="#" class="button button-glow button-border button-rounded button-primary" id="but3" name="agentsellassent">代理流水</a>
+        <a href="#" class="button button-glow button-border button-rounded button-primary" id="but4" name="buycontract">买入合约</a>
+        <a href="#" class="button button-glow button-border button-rounded button-primary" id="but5" name="sellcontract">卖出合约</a>
+        <ul style="padding-bottom: 10px"></ul>
+        <ul id="plans">
+
+        </ul>
+    </div>
+</div>
+</body>
+</html>

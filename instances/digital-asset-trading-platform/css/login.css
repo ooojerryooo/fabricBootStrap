@@ -1,0 +1,91 @@
+body,
+  p,
+  div,
+  ul,
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+  	margin: 0;
+  	padding: 0;
+  }
+
+  html {
+  	font-size: 1rem;
+  }
+
+  body {
+  	background: #E9E9E9;
+  }
+
+  #login {
+  	width: 3.5rem;
+  	height: 250px;
+  	background: #FFF;
+  	margin: 200px auto;
+  	position: relative;
+  }
+
+  #login h1 {
+  	width: 3.5rem;
+  	text-align: center;
+  	position: absolute;
+  	/* left: 110px; */
+  	top: -40px;
+  	font-size: 21px;
+		color: #00a9a7;
+  }
+
+  #login form p {
+  	text-align: center;
+  }
+
+  #userCode {
+  	background: url(../images/user.png) rgba(0, 0, 0, .1) no-repeat;
+  	width: 200px;
+  	height: 30px;
+  	border: solid #ccc 1px;
+  	border-radius: 3px;
+  	padding-left: 32px;
+  	margin-top: 50px;
+  	margin-bottom: 30px;
+  }
+
+  #pwd {
+  	background: url(../images/pwd.png) rgba(0, 0, 0, .1) no-repeat;
+  	width: 200px;
+  	height: 30px;
+  	border: solid #ccc 1px;
+  	border-radius: 3px;
+  	padding-left: 32px;
+  	margin-bottom: 30px;
+  }
+
+  #submit {
+  	width: 232px;
+  	height: 30px;
+  	background: rgba(0, 0, 0, .1);
+  	border: solid #ccc 1px;
+  	border-radius: 3px;
+  }
+
+  #submit:hover {
+  	cursor: pointer;
+  	background: #D8D8D8;
+  }
+
+  #register {
+  	display: inline-block;
+  	margin-top: 15px;
+  	font-family: Optima, sans-serif;
+  	font-size: 80%;
+  }
+
+  #register:link,
+  #register:visited {
+  	color: #7bd4cc;
+  	text-decoration: none;
+  }

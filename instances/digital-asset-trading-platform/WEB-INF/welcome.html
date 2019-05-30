@@ -1,0 +1,28 @@
+<link rel="stylesheet" type="text/css" href="../css/main.css" />
+<script src="../js/functions.js"></script>
+<script>
+	function check() {
+        setCookie("userCode","");
+        setCookie("userName","");
+        setCookie("key","");
+        setCookie("publicKey","");
+    }
+</script>
+
+<div id="input">
+	<p class="show-user">
+		<script>
+			var userName = getCookie("userName");
+			if (userName) document.write(userName);
+			else window.location.href="login.html";
+		</script>
+		，您好！
+	</p>
+
+    <p  class="show-user"><a href="login.html" onclick="check()" target="_parent">退出登录</a> </p>
+</div>
+
+
+
+
+

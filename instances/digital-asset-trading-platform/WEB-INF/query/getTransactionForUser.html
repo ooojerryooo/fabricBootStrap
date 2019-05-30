@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>产品列表</title>
+		<script type="text/javascript" src='../../js/jquery-3.3.1.js'></script>
+		<script type="text/javascript" src="../../js/functions.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../css/producemain.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/producestyle.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/buttons.css" />
+		<style type="text/css">
+			.demo {
+				/* width: 860px; */
+				margin: 60px auto 10px auto
+			}
+		</style>
+		<script>
+			$(document).ready(function() {
+				var userId = getCookie("userCode");
+				$.ajax({
+					url: url_prefix() + "getTransactionForUser",
+					dataType: 'json',
+					type: 'post',
+					data: {
+						userId: userId,
+						txType: "buyassent"
+					},
+					success: function(data) {
+						var data = eval('(' + data + ')'); //转换为json对象
+						var str = '';
+						data.forEach(function(value, index) {
+							var seller = ''
+							if (value.Record.AgentID == '' || value.Record.AgentID == null) {
+								seller = "<span>卖家：</span>" + value.Record.OwnerID
+							} else {
+								seller = "<span>卖家：</span>" + value.Record.AgentID
+							}
+							str = str + "<li class=\"plan\">\n" +
+								"\t\t\t\t<ul class=\"planContainer\">\n" +
+								"\t\t\t\t\t<li class=\"title\"><h2>" + value.Asset.AssetName + "</h2></li>\n" +
+								"\t\t\t\t\t<li class=\"price\"><p>交易价格：￥" + value.Record.TradePrice + "/年</p></li>\n" +
+								"\t\t\t\t\t<li>\n" +
+								"\t\t\t\t\t\t<ul class=\"options\">\n" +
+								"\t\t\t\t\t\t\t<li><span>花费金额：</span>" + value.Record.TradePrice + "</li>\n" +
+								"\t\t\t\t\t\t\t<li>" + value.Contract.ContractName + "</li>\n" +
+								"\t\t\t\t\t\t\t<li><span>交易日期：</span>" + value.Record.TxDate + "</li>\n" +
+								"\t\t\t\t\t\t\t<li>" + seller + "</li>\n" +
+								"\t\t\t\t\t\t</ul>\n" +
+								"\t\t\t\t\t</li>\n" +
+								"\t\t\t\t\t<ul style=\"padding-bottom: 10px\"></ul>\n" +
+								"\t\t\t\t</ul>\n" +
+								"\t\t\t</li>"
+						})
+						$('#plans').html(str)
+					}
+				})
+
+				$(".button-primary").on("click", function() {
+					var txType = $(this).attr("name")
+					$.ajax({
+						url: url_prefix() + "getTransactionForUser",
+						dataType: 'json',
+						type: 'post',
+						data: {
+							userId: userId,
+							txType: txType
+						},
+						success: function(data) {
+							var data = eval('(' + data + ')'); //转换为json对象
+							var str = '';
+							data.forEach(function(value, index) {
+								var a = '',
+									b = ''
+								if (txType == 'buyassent' || txType == 'buycontract') {
+									if (value.Record.AgentID == '' || value.Record.AgentID == null) {
+										a = "<span>卖家：</span>" + value.Record.OwnerID
+									} else {
+										a = "<span>卖家：</span>" + value.Record.AgentID
+									}
+									if (txType == 'buyassent') {
+										b = "<span>花费金额：</span>" + value.Record.TradePrice
+									} else {
+										b = "购入代理合约"
+									}
+								} else {
+									a = "<span>买家：</span>" + value.Record.BuyerID
+									if (txType == 'sellcontract') {
+										b = "卖出代理合约"
+									} else if (txType == 'sellassent') {
+										if (value.Record.AgentPrice == 0 || value.Record.AgentPrice == '' || value.Record.AgentPrice == null) {
+											b = "<span>收入金额：</span>" + value.Record.TradePrice
+										} else {
+											b = "<span>收入金额：</span>" + value.Record.AgentPrice
+										}
+									} else {
+										b = "<span>收入金额：</span>" + (value.Record.TradePrice - value.Record.AgentPrice)
+									}
+								}
+								str = str + "<li class=\"plan\">\n" +
+									"\t\t\t\t<ul class=\"planContainer\">\n" +
+									"\t\t\t\t\t<li class=\"title\"><h2>" + value.Asset.AssetName + "</h2></li>\n" +
+									"\t\t\t\t\t<li class=\"price\"><p>交易价格：￥" + value.Record.TradePrice + "/年</p></li>\n" +
+									"\t\t\t\t\t<li>\n" +
+									"\t\t\t\t\t\t<ul class=\"options\">\n" +
+									"\t\t\t\t\t\t\t<li>" + b + "</li>\n" +
+									"\t\t\t\t\t\t\t<li><span>合约：</span>" + value.Contract.ContractName + "</li>\n" +
+									"\t\t\t\t\t\t\t<li><span>交易日期：</span>" + value.Record.TxDate + "</li>\n" +
+									"\t\t\t\t\t\t\t<li>" + a + "</li>\n" +
+									"\t\t\t\t\t\t</ul>\n" +
+									"\t\t\t\t\t</li>\n" +
+									"\t\t\t\t\t<ul style=\"padding-bottom: 10px\"></ul>\n" +
+									"\t\t\t\t</ul>\n" +
+									"\t\t\t</li>"
+							})
+							$('#plans').html(str)
+						}
+					})
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="main">
+			<div class="demo" id="pricePlans">
+				<a href="#" class="button button-glow button-border button-rounded button-primary" id="but1" name="buyassent">买入流水</a>
+				<a href="#" class="button button-glow button-border button-rounded button-primary" id="but2" name="sellassent">卖出流水</a>
+				<a href="#" class="button button-glow button-border button-rounded button-primary" id="but3" name="agentsellassent">代理流水</a>
+				<a href="#" class="button button-glow button-border button-rounded button-primary" id="but4" name="buycontract">买入合约</a>
+				<a href="#" class="button button-glow button-border button-rounded button-primary" id="but5" name="sellcontract">卖出合约</a>
+				<ul style="padding-bottom: 10px"></ul>
+				<ul id="plans">
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
