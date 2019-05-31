@@ -12,9 +12,7 @@
 
 ### ` 二、下载Fabric源码`
     mkdir -p /root/go/src/github.com/hyperledger
-
     cd /root/go/src/github.com/hyperledger
-
     git clone https://github.com/hyperledger/fabric.git
 
 ### `三、编译源码，生成可执行文件`
@@ -24,11 +22,8 @@
 ### `四、可执行文件赋权、拷贝链码到GOPATHA下`
 
     cd /root/fabric-project
-
     cp chaincode/ $GOPATH/src/github.com/hyperledger/fabric/examples/chaincode/firstcc
-
     chmod -R +x *
-
 
 ### `五、容器外运行一个简单的fabric网络`
 
