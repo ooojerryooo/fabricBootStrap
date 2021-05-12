@@ -12,7 +12,7 @@
         "fabric-ca-client": "~1.4.0",
         "fabric-client": "~1.4.0",
         "fs": "0.0.1-security",
-        "grpc": "^1.6.0",
+        "grpc": "^1.24.9",
         "ipfs-api": "^26.1.2"
     },
     "author": "Anthony O'Dowd",
